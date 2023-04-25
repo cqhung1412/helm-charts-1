@@ -13,11 +13,11 @@ imagePullSecrets: []
 #   - name: registry-credentials
 
 ingress:
-  enabled: false
+  enabled: true
   ingressClassName:
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-  host: ""
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  host: test-trino-pgadmin-stag.dp.vng.vn
   tls:
     secretName: ""
 
@@ -124,61 +124,12 @@ auth: {}
   # passwordAuth: "username:encrypted-password-with-htpasswd"
 
 accessControl: {}
-  # # Supported types: pvc or configmap
-  # type: pvc
-  # refreshPeriod: 1s
-  # # Rules file is mounted to /etc/trino/access-control
-  # configFile: "/access-control/rules.json"
-  # # If you use pvc as the type, you have to specify the pvcName field:
-  # pvcName:
-  # # If you use pvc as the type, you can specify the name of the volume with the pvcVolumeName:
-  # pvcVolumeName:
-  # # If you use configmap as the type, you have to specify the rules field:
-  # rules:
-  #   rules.json: |-
-  #     {
-  #       "catalogs": [
-  #         {
-  #           "user": "admin",
-  #           "catalog": "(mysql|system)",
-  #           "allow": "all"
-  #         },
-  #         {
-  #           "group": "finance|human_resources",
-  #           "catalog": "postgres",
-  #           "allow": true
-  #         },
-  #         {
-  #           "catalog": "hive",
-  #           "allow": "all"
-  #         },
-  #         {
-  #           "user": "alice",
-  #           "catalog": "postgresql",
-  #           "allow": "read-only"
-  #         },
-  #         {
-  #           "catalog": "system",
-  #           "allow": "none"
-  #         }
-  #       ],
-  #       "schemas": [
-  #         {
-  #           "user": "admin",
-  #           "schema": ".*",
-  #           "owner": true
-  #         },
-  #         {
-  #           "user": "guest",
-  #           "owner": false
-  #         },
-  #         {
-  #           "catalog": "default",
-  #           "schema": "default",
-  #           "owner": true
-  #         }
-  #       ]
-  #     }
+  # Set access control
+  # https://trino.io/docs/current/security/access-control.html
+  # accessControl:
+  #   type: file
+  #   file:
+  #     config: "/etc/trino/access-control.properties"
 
 resourceGroups: {}
   # # Supported types: pvc or configmap
@@ -337,23 +288,25 @@ faultTolerance:
   #   exchange.s3.aws-access-key=<access-key>
   #   exchange.s3.aws-secret-key=<secret-key>
 
-connectors: {}
+hive: 
+  enabled: true
+
+connectors:
   # Connectors configuration usually contains sensitive data (like passwords, usernames, ...)
   # so data is stored in a secret
-  # mysql.properties: |-
-  #   connector.name=mysql
-  #   connection-url=jdbc:mysql://mysqlserver:3306
-  #   connection-user=mysqluser
-  #   connection-password=mysqlpassword
-  # elk.properties: |-
-  #   connector.name=elasticsearch
-  #   elasticsearch.host=elasticsearchserver
-  #   elasticsearch.port=9200
-  #   elasticsearch.default-schema-name=default
-  #   elasticsearch.security=PASSWORD
-  #   elasticsearch.auth.user=elastiuser
-  #   elasticsearch.auth.password=elasticpassword
-  #   elasticsearch.tls.enabled=true
+  hive.properties: |-
+    connector.name=hive
+    hive.metastore.uri=thrift://c1s-wkr58.dp.local:9083
+    hive.s3.aws-access-key=TJPQ58NEBSF5JH4MM5U8
+    hive.s3.aws-secret-key=hgW0LpqSurlThfyQcBy0c9ZiiNuxmkPMQOh6gKXi
+    hive.s3.endpoint=https://s3.dp.vng.vn
+    hive.config.resources=/etc/hive-site.xml
+
+  # hive.metastore.warehouse.dir=s3a://testtrino-d9sgw/trino
+  # http-server.authentication.type=KERBEROS
+  # http-server.authentication.krb5.service-name=trino
+  # http.authentication.krb5.config=/etc/krb5.conf
+  # http-server.authentication.krb5.principal-hostname=hive/_HOST@DP.LOCAL
 
 catalogs: {}
   # Catalogs that will be mounted in {{ .Values.config.general.path }}/catalog
