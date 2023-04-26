@@ -1,0 +1,25 @@
+# The base hadoop image to use for all components.
+# See this repo for image build details: https://github.com/Comcast/kube-yarn/tree/master/image
+image:
+  repository: alexcpn/hivemetastore
+  tag: 3.1.3.5
+  pullPolicy: IfNotPresent
+
+postgresql:
+  postgresqlUsername: hive
+  postgresqlPassword: hive
+  postgresqlDatabase: metastore
+  initdbScriptsConfigMap: hive-metastore-postgresql-init
+
+resources: {}
+
+conf:
+  hiveSite:
+    hive_metastore_uris: thrift://hive-metastore:9083
+    # if not set, default hive.metastore.warehouse.dir is default to: "hdfs://{{.Release.Name}}-hdfs:8020/user/hive/warehouse"
+    hive.metastore.warehouse.dir: s3a://testtrino-d9sgw/trinoquery
+    connector.name: hive
+    fs.s3a.access.key: TJPQ58NEBSF5JH4MM5U8
+    fs.s3a.secret.key: hgW0LpqSurlThfyQcBy0c9ZiiNuxmkPMQOh6gKXi
+    fs.s3a.endpoint: https://s3.dp.vng.vn
+    fs.s3a.path.style.access: true

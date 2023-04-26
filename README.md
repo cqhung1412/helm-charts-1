@@ -1,5 +1,11 @@
 # Valeriano Manassero Helm Charts Library for Kubernetes
 
+```bash
+# Test commands
+trino --catalog hive
+CREATE SCHEMA hive.tpcds WITH (location = 's3a://testtrino-d9sgw/trinoquery/tpcds/');
+```
+
 Popular applications, provided by [Valeriano Manassero](https://github.com/valeriano-manassero), ready to launch on Kubernetes using [Kubernetes Helm](https://github.com/helm/helm).
 
 Charts are published on [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/valeriano-manassero)](https://artifacthub.io/packages/search?repo=valeriano-manassero)

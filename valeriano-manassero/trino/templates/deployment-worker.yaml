@@ -30,9 +30,6 @@ spec:
         fsGroup: {{ .fsGroup }}
       {{- end }}
       volumes:
-        - name: hive-config
-          configMap:
-            name: {{ .Release.Name }}-hive
         - name: config-volume
           configMap:
             name: {{ template "trino.worker" . }}
@@ -106,10 +103,6 @@ spec:
           {{-  tpl (toYaml .Values.env) . | nindent 12 }}
           {{- end }}
           volumeMounts:
-            - mountPath: "/etc/hive-site.xml"
-              name: hive-config
-              subPath: hive-site.xml
-              readOnly: true
             - mountPath: {{ .Values.config.general.path }}
               name: config-volume
             - mountPath: /etc/trino/schemas
