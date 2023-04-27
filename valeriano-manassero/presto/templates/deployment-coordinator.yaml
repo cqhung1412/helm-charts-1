@@ -40,17 +40,17 @@ spec:
             - mountPath: {{ .Values.server.config.path }}/catalog
               name: catalog-volume
           ports:
-            - name: http-coord
+            - name: http
               containerPort: {{ .Values.server.config.http.port }}
               protocol: TCP
           livenessProbe:
             httpGet:
               path: /v1/status
-              port: http-coord
+              port: http
           readinessProbe:
             httpGet:
               path: /v1/status
-              port: http-coord
+              port: http
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}

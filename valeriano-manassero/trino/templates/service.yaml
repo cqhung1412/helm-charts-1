@@ -8,9 +8,9 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.config.general.http.port }}
-      targetPort: http-coord
+      targetPort: http
       protocol: TCP
-      name: http-coord
+      name: http
     {{- if .Values.config.general.httpsServer.enabled }}
     - port: {{ .Values.config.general.httpsServer.port }}
       targetPort: https-coord

@@ -256,7 +256,7 @@ spec:
               {{- end }}
             {{- end }}
           ports:
-            - name: http-coord
+            - name: http
               containerPort: {{ .Values.config.general.http.port }}
               protocol: TCP
             {{- if .Values.config.general.httpsServer.enabled }}
@@ -272,11 +272,11 @@ spec:
           livenessProbe:
             httpGet:
               path: /v1/status
-              port: http-coord
+              port: http
           readinessProbe:
             httpGet:
               path: /v1/status
-              port: http-coord
+              port: http
           resources:
 {{ toYaml .Values.config.coordinator.resources | indent 12 }}
     {{- with .Values.config.coordinator.nodeSelector }}

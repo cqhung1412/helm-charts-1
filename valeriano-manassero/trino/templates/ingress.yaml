@@ -31,9 +31,11 @@ spec:
             name: {{ include "trino.fullname" . }}
             port:
               {{- if .Values.config.general.httpsServer.enabled }}
+              name: https
               number: {{ .Values.config.general.httpsServer.port }}
               {{- else }}
-              number: {{ .Values.config.general.http.port }}
+              name: http
+              # number: {{ .Values.config.general.http.port }}
               {{- end }}
 {{- else -}}
 {{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}

@@ -14,12 +14,12 @@ imagePullSecrets: []
 
 ingress:
   enabled: true
-  ingressClassName:
-  annotations:
-    kubernetes.io/ingress.class: nginx
+  ingressClassName: nginx
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
   host: trino-test-pgadmin-stag.dp.vng.vn
   tls:
-    secretName: ""
+    secretName:
 
 clusterDomain: cluster.local
 
@@ -35,10 +35,10 @@ config:
     path: /etc/trino
     http:
       port: 8080
-    processForwarded: false
+    processForwarded: true
     # -- Trino supports multiple authentication types: PASSWORD, CERTIFICATE, OAUTH2, JWT, KERBEROS
     # For more info: https://trino.io/docs/current/security/authentication-types.html
-    authenticationType: ""
+    authenticationType: PASSWORD
     catalogsMountType: "secret"
     httpsServer:
       enabled: false
@@ -118,10 +118,10 @@ config:
 
 eventListenerProperties: {}
 
-auth: {}
+auth:
   # Set username and password
   # https://trino.io/docs/current/security/password-file.html#file-format
-  # passwordAuth: "username:encrypted-password-with-htpasswd"
+  passwordAuth: "admin:$2y$10$0msB8DgFlFTLQ.X8Ggz7k.8s.lOLc..3L6ml/KWsr2qeI0mDjdspG"
 
 accessControl: {}
   # Set access control
