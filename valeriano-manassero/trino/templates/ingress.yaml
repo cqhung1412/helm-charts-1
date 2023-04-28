@@ -21,7 +21,7 @@ spec:
       secretName: {{ .Values.ingress.tls.secretName }}
   {{- end }}
   rules:
-  - host: "{{ .Values.ingress.host }}"
+  - host: "{{ .Release.Name }}-{{ .Values.ingress.host }}"
     http:
       paths:
       - path: "/"
@@ -31,7 +31,7 @@ spec:
             name: {{ include "trino.fullname" . }}
             port:
               {{- if .Values.config.general.httpsServer.enabled }}
-              name: https
+              # name: https
               number: {{ .Values.config.general.httpsServer.port }}
               {{- else }}
               name: http
